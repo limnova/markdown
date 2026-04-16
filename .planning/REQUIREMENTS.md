@@ -91,38 +91,38 @@ Which phases cover which requirements. Updated during roadmap creation.
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| WORK-01 | TBD | Pending |
-| WORK-02 | TBD | Pending |
-| WORK-03 | TBD | Pending |
-| FILE-01 | TBD | Pending |
-| FILE-02 | TBD | Pending |
-| FILE-03 | TBD | Pending |
-| FILE-04 | TBD | Pending |
-| FILE-05 | TBD | Pending |
-| FILE-06 | TBD | Pending |
-| EDIT-01 | TBD | Pending |
-| EDIT-02 | TBD | Pending |
-| EDIT-03 | TBD | Pending |
-| EDIT-04 | TBD | Pending |
-| EDIT-05 | TBD | Pending |
-| EDIT-06 | TBD | Pending |
-| IMAG-01 | TBD | Pending |
-| IMAG-02 | TBD | Pending |
-| IMAG-03 | TBD | Pending |
-| SEAR-01 | TBD | Pending |
-| SEAR-02 | TBD | Pending |
-| SEAR-03 | TBD | Pending |
-| THEM-01 | TBD | Pending |
-| THEM-02 | TBD | Pending |
-| THEM-03 | TBD | Pending |
-| PERF-01 | TBD | Pending |
-| PERF-02 | TBD | Pending |
-| PERF-03 | TBD | Pending |
+| WORK-01 | Phase 1 | Pending |
+| WORK-02 | Phase 1 | Pending |
+| WORK-03 | Phase 1 | Pending |
+| FILE-01 | Phase 2 | Pending |
+| FILE-02 | Phase 2 | Pending |
+| FILE-03 | Phase 2 | Pending |
+| FILE-04 | Phase 2 | Pending |
+| FILE-05 | Phase 2 | Pending |
+| FILE-06 | Phase 2 | Pending |
+| EDIT-01 | Phase 3 | Pending |
+| EDIT-02 | Phase 3 | Pending |
+| EDIT-03 | Phase 3 | Pending |
+| EDIT-04 | Phase 3 | Pending |
+| EDIT-05 | Phase 2 | Pending |
+| EDIT-06 | Phase 2 | Pending |
+| IMAG-01 | Phase 4 | Pending |
+| IMAG-02 | Phase 4 | Pending |
+| IMAG-03 | Phase 4 | Pending |
+| SEAR-01 | Phase 4 | Pending |
+| SEAR-02 | Phase 4 | Pending |
+| SEAR-03 | Phase 4 | Pending |
+| THEM-01 | Phase 5 | Pending |
+| THEM-02 | Phase 5 | Pending |
+| THEM-03 | Phase 5 | Pending |
+| PERF-01 | Phase 3 | Pending |
+| PERF-02 | Phase 2 | Pending |
+| PERF-03 | Phase 1 | Pending |
 
 **Coverage:**
 - v1 requirements: 27 total
-- Mapped to phases: 0
-- Unmapped: 27 ⚠️
+- Mapped to phases: 27
+- Unmapped: 0 ✓
 
 ---
 *Requirements defined: 2026-04-16*
