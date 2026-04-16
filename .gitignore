@@ -25,5 +25,4 @@ dist-ssr
 
 # Local workflow and machine-specific config
 .codex/
-.planning/
 .cargo/
