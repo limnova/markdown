@@ -1,3 +1,5 @@
+import { formatDisplayPath } from "../formatDisplayPath";
+
 type WorkspaceInvalidProps = {
   brokenPath: string;
   onChooseWorkspace: () => void;
@@ -23,7 +25,9 @@ function WorkspaceInvalid({
         </p>
         <div className="workspace-path-pill workspace-path-pill--danger">
           <span className="workspace-path-pill__label">Last path</span>
-          <span className="workspace-path-pill__value">{brokenPath}</span>
+          <span className="workspace-path-pill__value">
+            {formatDisplayPath(brokenPath)}
+          </span>
         </div>
       </div>
 

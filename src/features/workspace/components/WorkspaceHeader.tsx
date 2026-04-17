@@ -1,3 +1,5 @@
+import { formatDisplayPath } from "../formatDisplayPath";
+
 type WorkspaceHeaderProps = {
   currentWorkspacePath: string;
   statusLabel?: string;
@@ -17,7 +19,9 @@ function WorkspaceHeader({
       </div>
       <div className="workspace-path-pill">
         <span className="workspace-path-pill__label">Current workspace</span>
-        <span className="workspace-path-pill__value">{currentWorkspacePath}</span>
+        <span className="workspace-path-pill__value">
+          {formatDisplayPath(currentWorkspacePath)}
+        </span>
       </div>
     </header>
   );
