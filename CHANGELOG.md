@@ -2,6 +2,12 @@
 
 This file records human-readable release notes for published versions.
 
+## v0.1.2 - 2026-04-17
+
+### Fixed
+- Fixed the GitHub `Release` workflow to locate Windows installer bundles whether Tauri writes them under the repo root target directory or under `src-tauri/target`.
+- Fixed artifact and release asset upload steps that previously failed after a successful build because they searched only one bundle path.
+
 ## v0.1.1 - 2026-04-17
 
 ### Fixed
