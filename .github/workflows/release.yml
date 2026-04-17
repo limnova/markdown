@@ -16,7 +16,7 @@ jobs:
   publish-windows:
     runs-on: windows-latest
     env:
-      CARGO_TARGET_DIR: ./.cargo-target-gha
+      CARGO_TARGET_DIR: .cargo-target-gha
       RELEASE_TOKEN: ${{ secrets.RELEASE_TOKEN != '' && secrets.RELEASE_TOKEN || github.token }}
       HAS_RELEASE_TOKEN: ${{ secrets.RELEASE_TOKEN != '' }}
 

@@ -2,6 +2,12 @@
 
 This file records human-readable release notes for published versions.
 
+## v0.1.3 - 2026-04-17
+
+### Fixed
+- Fixed the GitHub `Release` workflow path normalization so artifact globs no longer generate invalid patterns such as `src-tauri/./.cargo-target-gha/...`.
+- Normalized the temporary Cargo target directory used on GitHub Actions so both build steps and artifact upload steps resolve the same bundle location.
+
 ## v0.1.2 - 2026-04-17
 
 ### Fixed
