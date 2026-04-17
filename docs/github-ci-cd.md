@@ -3,7 +3,7 @@
 这套配置面向当前仓库的 Windows-only Tauri 应用，拆成两条 GitHub Actions 工作流：
 
 1. `CI`：对每个 PR / 分支推送执行基础校验。
-2. `Release`：当推送 `v*.*.*` tag 时，自动构建 Windows 安装包并创建 GitHub draft release。
+2. `Release`：当推送 `v*.*.*` tag 时，自动构建 Windows 安装包，并在权限允许时创建 GitHub draft release。
 
 ## 工作流说明
 
@@ -40,12 +40,13 @@
 - 将 `CARGO_TARGET_DIR` 临时指向 GitHub runner 的临时目录，避免受本机 `.cargo/config.toml` 固定路径影响
 - 调用官方 `tauri-apps/tauri-action`
 - 构建 Windows 安装产物
-- 创建 GitHub draft release
-- 将 `.msi` 和 `*-setup.exe` 安装包上传到 release assets
-- 额外上传一个名为 `windows-installers-<tag>` 的 workflow artifact
-- 在 job summary 明确列出 draft release 地址和生成的安装程序文件名
+- 始终上传一个名为 `windows-installers-<tag>` 的 workflow artifact
+- 先尝试用 `GITHUB_TOKEN` 创建 GitHub draft release 并上传 `.msi` / `*-setup.exe` 资产
+- 如果仓库配置了 `RELEASE_TOKEN` secret，则优先使用它来创建 release
+- 如果 release 创建权限不足，工作流不会因为 `Resource not accessible by integration` 失败，安装包仍保留在 workflow artifact 中
+- 在 job summary 明确列出 draft release 地址或跳过原因，以及生成的安装程序文件名
 
-当前默认是 `draft release`，这样第一次接入时更安全；确认流程稳定后，可以把 `releaseDraft: true` 改成 `false`，让 tag 推送后直接公开发布。
+这样做的原因是：某些仓库或组织的 Actions integration 对 GitHub Releases API 没有写权限，会出现 `Resource not accessible by integration`。现在即使 release 创建权限缺失，tag 构建也会成功，安装包仍可从 Actions artifact 下载。
 
 ## 你需要准备的信息
 
@@ -84,8 +85,9 @@ git tag v0.1.0
 git push origin v0.1.0
 ```
 
-4. 等待 `Release` 工作流创建 draft release
-5. 在 GitHub Release 页面检查产物和说明，再手动发布
+4. 等待 `Release` 工作流完成构建
+5. 如果 GitHub draft release 已创建，到 Release 页面检查产物和说明
+6. 如果 job summary 提示 release 因权限被跳过，则从 Actions run 的 `windows-installers-<tag>` artifact 下载安装包
 
 ### 4. 可选但强烈建议准备的内容
 
@@ -114,13 +116,19 @@ Tauri 官方说明指出，Windows 代码签名有助于避免浏览器下载后
 
 ## 建议的仓库 Secrets
 
-当前工作流直接可用，不强制要求自定义 secrets。
+当前工作流构建本身不强制要求自定义 secrets。默认会先尝试使用 `GITHUB_TOKEN` 创建 draft release；如果当前仓库策略不允许，就会跳过 release 创建但保留构建产物。
 
 默认使用：
 
 - `GITHUB_TOKEN`
 
-这是 GitHub Actions 自动提供的 token，用来创建 release 和上传资产。
+这是 GitHub Actions 自动提供的 token。当前 workflow 会先用它尝试创建 release；如果仓库/组织策略限制了 GitHub Releases API 写权限，就会出现权限失败并自动回退到仅保留 workflow artifact。
+
+推荐额外配置：
+
+- `RELEASE_TOKEN`
+
+建议使用一个具备当前仓库 `Contents: write` 权限的 fine-grained PAT，或者具备等效权限的 classic PAT。配置后，`Release` 工作流会优先使用它创建 draft release 并上传安装包资产，用来绕过受限的默认 integration 权限。
 
 如果后续启用签名或 updater，通常会继续新增 secrets，例如：
 
