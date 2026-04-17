@@ -2,6 +2,12 @@
 
 This file records human-readable release notes for published versions.
 
+## v0.1.4 - 2026-04-17
+
+### Fixed
+- Fixed the GitHub `Release` workflow to resolve exact installer file paths before artifact upload and release asset upload, removing fragile fallback globs.
+- Fixed false-negative artifact upload failures caused by unmatched optional bundle patterns in GitHub Actions.
+
 ## v0.1.3 - 2026-04-17
 
 ### Fixed

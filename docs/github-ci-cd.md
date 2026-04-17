@@ -40,11 +40,12 @@
 - 将 `CARGO_TARGET_DIR` 临时指向 GitHub runner 的临时目录，避免受本机 `.cargo/config.toml` 固定路径影响
 - 调用官方 `tauri-apps/tauri-action`
 - 构建 Windows 安装产物
+- 先自动探测真实的 `.msi` 和 `*-setup.exe` 文件路径
 - 始终上传一个名为 `windows-installers-<tag>` 的 workflow artifact
 - 先尝试用 `GITHUB_TOKEN` 创建 GitHub draft release 并上传 `.msi` / `*-setup.exe` 资产
 - 如果仓库配置了 `RELEASE_TOKEN` secret，则优先使用它来创建 release
 - 如果 release 创建权限不足，工作流不会因为 `Resource not accessible by integration` 失败，安装包仍保留在 workflow artifact 中
-- workflow 会同时兼容仓库根目录和 `src-tauri` 目录下的 bundle 输出路径，避免因 Tauri Action 的工作目录差异导致“构建成功但找不到安装包”
+- workflow 会同时兼容仓库根目录和 `src-tauri` 目录下的 bundle 输出路径，并把探测到的精确文件路径传给上传步骤，避免因 Tauri Action 的工作目录差异或兜底 glob 未命中导致失败
 - 在 job summary 明确列出 draft release 地址或跳过原因，以及生成的安装程序文件名
 
 这样做的原因是：某些仓库或组织的 Actions integration 对 GitHub Releases API 没有写权限，会出现 `Resource not accessible by integration`。现在即使 release 创建权限缺失，tag 构建也会成功，安装包仍可从 Actions artifact 下载。
