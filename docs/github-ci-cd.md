@@ -44,6 +44,7 @@
 - 先尝试用 `GITHUB_TOKEN` 创建 GitHub draft release 并上传 `.msi` / `*-setup.exe` 资产
 - 如果仓库配置了 `RELEASE_TOKEN` secret，则优先使用它来创建 release
 - 如果 release 创建权限不足，工作流不会因为 `Resource not accessible by integration` 失败，安装包仍保留在 workflow artifact 中
+- workflow 会同时兼容仓库根目录和 `src-tauri` 目录下的 bundle 输出路径，避免因 Tauri Action 的工作目录差异导致“构建成功但找不到安装包”
 - 在 job summary 明确列出 draft release 地址或跳过原因，以及生成的安装程序文件名
 
 这样做的原因是：某些仓库或组织的 Actions integration 对 GitHub Releases API 没有写权限，会出现 `Resource not accessible by integration`。现在即使 release 创建权限缺失，tag 构建也会成功，安装包仍可从 Actions artifact 下载。
