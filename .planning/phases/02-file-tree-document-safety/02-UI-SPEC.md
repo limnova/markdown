@@ -1,10 +1,11 @@
 ---
 phase: 02
 slug: file-tree-document-safety
-status: draft
+status: approved
 shadcn_initialized: false
 preset: none
 created: 2026-04-17
+reviewed_at: 2026-04-17T10:39:21.4350003+08:00
 ---
 
 # Phase 02 — UI Design Contract
@@ -39,7 +40,7 @@ Declared values (must be multiples of 4):
 | 2xl | 48px | Large document-empty-state breathing room |
 | 3xl | 64px | Maximum app-shell breathing room on large windows |
 
-Exceptions: 40px minimum height for tree rows, inline create/rename rows, top-header action buttons, and save-status pills; 2px drop-target indicator lines are allowed for drag-and-drop feedback.
+Exceptions: 40px minimum height for tree rows, inline create/rename rows, top-header action buttons, and save-status pills; 4px drop-target indicator bands are allowed for drag-and-drop feedback.
 
 ---
 
@@ -94,11 +95,12 @@ Accent reserved for: the primary `New note` action, keyboard focus ring, the cur
 - Use a fixed 304px left sidebar and a flexible right document pane. Both sit on the same warm neutral background and keep the existing border radius, border tone, and soft shadow vocabulary from Phase 1.
 - Keep the sidebar visually calm: top workspace header, then tree actions, then the file tree. Do not add IDE-like tab bars, dense tool ribbons, or multi-panel nesting.
 - The document pane header must always show the current document path on the left and a dedicated save-status area on the right. Save trust must stay visible without opening a modal or toast history.
-- Tree rows use 40px minimum height, 14px semibold primary labels, 13px muted path/meta text, and a 16px indentation step per depth level.
+- The ready-shell reading order is fixed: document-pane empty state first, `New note` CTA second, save-status area third, and tree chrome last.
+- Tree rows use 40px minimum height, 14px semibold primary labels, 14px muted path/meta text, and a 16px indentation step per depth level.
 - Active Markdown rows use an accent-tinted background, a 1px accent outline, and stronger text weight. Hover states on non-active rows remain neutral and low-motion.
 - Folder rows and Markdown rows look first-class. Non-Markdown rows remain visible for orientation but are visually weakened: muted label, low-contrast badge, no active treatment, no accent hover.
 - Inline create and rename states reuse the same row frame as normal tree rows. The input is embedded in-row, auto-focused, and never shown as a separate naming modal.
-- Valid drag destinations show a 2px accent indicator and a soft inset highlight. Invalid destinations show no highlight and must not fake acceptance.
+- Valid drag destinations show a 4px accent indicator band and a soft inset highlight. Invalid destinations show no highlight and must not fake acceptance.
 - Destructive confirmations use the same shell language: warm surface, low-contrast border, left-aligned copy, and one clearly destructive primary action. No bright-red full-screen takeover.
 
 ---
@@ -137,7 +139,7 @@ Accent reserved for: the primary `New note` action, keyboard focus ring, the cur
 - If routine auto-save fails, block the transition, keep the current document in place, and surface the failure in the persistent save-status area plus supporting inline error text.
 - Deleting any file or folder always requires explicit confirmation before the operation runs.
 - Delete confirmation prefers Recycle Bin wording and behavior when the platform allows it. Do not describe deletion as permanent unless fallback behavior makes that necessary.
-- Deleting the current dirty note is a special case: the confirmation primary action must preserve work first, using `Save and move to Recycle Bin`, with `Cancel` as the only secondary path. Do not offer a casual discard-first shortcut in this phase.
+- Deleting the current dirty note is a special case: the confirmation primary action must preserve work first, using `Save and move to Recycle Bin`, with `Keep note` as the only secondary path. Do not offer a casual discard-first shortcut in this phase.
 
 ---
 
@@ -158,8 +160,8 @@ Accent reserved for: the primary `New note` action, keyboard focus ring, the cur
 | Save failed | Persistent red `Save failed` chip plus inline supporting copy; routine transitions blocked |
 | Valid drag target hovered | Accent drop indicator and inset highlight on the destination folder or root drop zone |
 | Invalid drag target hovered | No acceptance highlight; cursor/treatment stays non-affirming |
-| Delete clean item | Confirmation surface with `Move to Recycle Bin` primary action and `Cancel` secondary action |
-| Delete current dirty note | Confirmation surface with `Save and move to Recycle Bin` primary action and `Cancel` secondary action |
+| Delete clean item | Confirmation surface with `Move to Recycle Bin` primary action and `Keep item` secondary action |
+| Delete current dirty note | Confirmation surface with `Save and move to Recycle Bin` primary action and `Keep note` secondary action |
 | Current document renamed or moved | Session remains open; path label, tree highlight, and save-status context update without closing the editor |
 
 ---
@@ -176,11 +178,11 @@ Accent reserved for: the primary `New note` action, keyboard focus ring, the cur
 
 ## Checker Sign-Off
 
-- [ ] Dimension 1 Copywriting: PASS
-- [ ] Dimension 2 Visuals: PASS
-- [ ] Dimension 3 Color: PASS
-- [ ] Dimension 4 Typography: PASS
-- [ ] Dimension 5 Spacing: PASS
-- [ ] Dimension 6 Registry Safety: PASS
+- [x] Dimension 1 Copywriting: PASS
+- [x] Dimension 2 Visuals: PASS
+- [x] Dimension 3 Color: PASS
+- [x] Dimension 4 Typography: PASS
+- [x] Dimension 5 Spacing: PASS
+- [x] Dimension 6 Registry Safety: PASS
 
-**Approval:** pending
+**Approval:** approved 2026-04-17
