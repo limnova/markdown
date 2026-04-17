@@ -1,4 +1,10 @@
-function WorkspaceBanner() {
+type WorkspaceBannerProps = {
+  message?: string;
+};
+
+function WorkspaceBanner({
+  message = "That location is outside the current workspace and can't be opened here.",
+}: WorkspaceBannerProps) {
   return (
     <div className="workspace-banner" role="alert">
       <svg
@@ -11,9 +17,7 @@ function WorkspaceBanner() {
           fill="currentColor"
         />
       </svg>
-      <p className="workspace-banner__copy">
-        That location is outside the current workspace and can't be opened here.
-      </p>
+      <p className="workspace-banner__copy">{message}</p>
     </div>
   );
 }
