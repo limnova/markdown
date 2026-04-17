@@ -5,6 +5,7 @@ This template should help get you started developing with Tauri, React and Types
 ## Project Docs
 
 - [Typora-Like Editor Plan](./docs/typora-like-editor-plan.md)
+- [GitHub CI/CD Guide](./docs/github-ci-cd.md)
 
 ## Recommended IDE Setup
 

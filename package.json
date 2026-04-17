@@ -2,10 +2,15 @@
   "name": "react-tauri-app",
   "private": true,
   "version": "0.1.0",
+  "packageManager": "pnpm@10.33.0",
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "tsc && vite build",
+    "typecheck": "tsc --noEmit",
+    "build:web": "vite build",
+    "build": "pnpm typecheck && pnpm build:web",
+    "check:rust": "cargo check --manifest-path src-tauri/Cargo.toml --locked",
+    "check": "pnpm build && pnpm check:rust",
     "preview": "vite preview",
     "tauri": "tauri"
   },
