@@ -199,7 +199,7 @@ function WorkspaceTreeRow({
                 </>
               ) : null}
 
-              {node.kind !== "external-link" ? (
+              {node.kind === "directory" || node.kind === "markdown" ? (
                 <>
                   <button
                     type="button"
