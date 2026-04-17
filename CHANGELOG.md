@@ -2,6 +2,16 @@
 
 This file records human-readable release notes for published versions.
 
+## v0.1.1 - 2026-04-17
+
+### Fixed
+- Fixed the GitHub `Release` workflow so Windows tag builds no longer fail when the default integration token cannot create GitHub releases.
+- Removed the unsupported `uploadWorkflowArtifacts` input from the Tauri release action path.
+
+### Changed
+- Release automation now always preserves Windows installers as GitHub Actions artifacts, even when draft release creation is skipped.
+- Added support for an optional `RELEASE_TOKEN` secret to restore automatic draft release publishing on restricted repositories.
+
 ## v0.1.0 - 2026-04-17
 
 ### Added
