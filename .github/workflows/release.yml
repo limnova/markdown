@@ -1,0 +1,79 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - "v*.*.*"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: release-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  publish-windows:
+    runs-on: windows-latest
+    env:
+      CARGO_TARGET_DIR: ./.cargo-target-gha
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10.33.0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+
+      - name: Install Rust toolchain
+        uses: dtolnay/rust-toolchain@stable
+
+      - name: Install frontend dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Build Windows release and upload assets
+        id: tauri_build
+        uses: tauri-apps/tauri-action@action-v0.6.0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tagName: ${{ github.ref_name }}
+          releaseName: "react-tauri-app v__VERSION__"
+          releaseBody: |
+            Automated draft release for `${{ github.ref_name }}`.
+
+            Assets are built on GitHub Actions and attached automatically.
+          releaseDraft: true
+          prerelease: ${{ contains(github.ref_name, '-') }}
+          generateReleaseNotes: true
+          uploadWorkflowArtifacts: false
+
+      - name: Upload Windows installers
+        uses: actions/upload-artifact@v4
+        with:
+          name: windows-installers-${{ github.ref_name }}
+          if-no-files-found: error
+          path: |
+            ${{ env.CARGO_TARGET_DIR }}/release/bundle/msi/*.msi
+            ${{ env.CARGO_TARGET_DIR }}/release/bundle/nsis/*-setup.exe
+
+      - name: Publish installer summary
+        shell: pwsh
+        run: |
+          $msiFiles = Get-ChildItem -Path "$env:CARGO_TARGET_DIR/release/bundle/msi/*.msi" -ErrorAction Stop
+          $setupFiles = Get-ChildItem -Path "$env:CARGO_TARGET_DIR/release/bundle/nsis/*-setup.exe" -ErrorAction Stop
+
+          Add-Content -Path $env:GITHUB_STEP_SUMMARY -Value "## Windows Installers"
+          Add-Content -Path $env:GITHUB_STEP_SUMMARY -Value ""
+          Add-Content -Path $env:GITHUB_STEP_SUMMARY -Value "- Draft release: ${{ steps.tauri_build.outputs.releaseHtmlUrl }}"
+          Add-Content -Path $env:GITHUB_STEP_SUMMARY -Value "- Workflow artifact: \`windows-installers-${{ github.ref_name }}\`"
+          Add-Content -Path $env:GITHUB_STEP_SUMMARY -Value "- NSIS installer: \`$($setupFiles[0].Name)\`"
+          Add-Content -Path $env:GITHUB_STEP_SUMMARY -Value "- MSI installer: \`$($msiFiles[0].Name)\`"
