@@ -1,51 +1,95 @@
-import { useState } from "react";
-import reactLogo from "./assets/react.svg";
-import { invoke } from "@tauri-apps/api/core";
 import "./App.css";
+import WorkspaceHeader from "./features/workspace/components/WorkspaceHeader";
+import WorkspaceInvalid from "./features/workspace/components/WorkspaceInvalid";
+import WorkspaceOverview from "./features/workspace/components/WorkspaceOverview";
+import WorkspaceWelcome from "./features/workspace/components/WorkspaceWelcome";
+import { useWorkspaceController } from "./features/workspace/useWorkspaceController";
+
+function LoadingPanel() {
+  return (
+    <section className="workspace-panel" aria-live="polite">
+      <div className="workspace-stack">
+        <p className="workspace-eyebrow">Workspace</p>
+        <h1 className="workspace-title">Restoring your workspace</h1>
+        <p className="workspace-copy">
+          Checking the last trusted folder before the writing shell opens.
+        </p>
+      </div>
+    </section>
+  );
+}
+
+function ReadyPanel({
+  currentWorkspacePath,
+  entries,
+  showBoundaryBanner,
+}: {
+  currentWorkspacePath: string;
+  entries: {
+    name: string;
+    path: string;
+    kind: "directory" | "markdown" | "other" | "external-link";
+  }[];
+  showBoundaryBanner: boolean;
+}) {
+  return (
+    <section className="workspace-panel" aria-labelledby="workspace-ready-title">
+      <WorkspaceHeader currentWorkspacePath={currentWorkspacePath} />
+
+      <div className="workspace-stack">
+        <div className="workspace-stack">
+          <p className="workspace-eyebrow">Workspace overview</p>
+          <h1 id="workspace-ready-title" className="workspace-title">
+            Ready to write inside one trusted root
+          </h1>
+          <p className="workspace-copy">
+            The Phase 1 shell shows the top-level folders and files inside the
+            current workspace, while keeping out-of-root results informational.
+          </p>
+        </div>
+
+        <WorkspaceOverview
+          entries={entries}
+          showBoundaryBanner={showBoundaryBanner}
+        />
+      </div>
+    </section>
+  );
+}
 
 function App() {
-  const [greetMsg, setGreetMsg] = useState("");
-  const [name, setName] = useState("");
+  const {
+    mode,
+    workspace,
+    brokenPath,
+    boundaryMessage,
+    isLoading,
+    onChooseWorkspace,
+    onRetryWorkspace,
+  } = useWorkspaceController();
 
-  async function greet() {
-    // Learn more about Tauri commands at https://tauri.app/develop/calling-rust/
-    setGreetMsg(await invoke("greet", { name }));
+  let content = <LoadingPanel />;
+
+  if (!isLoading && mode === "welcome") {
+    content = <WorkspaceWelcome onChooseWorkspace={onChooseWorkspace} />;
+  } else if (!isLoading && mode === "invalid") {
+    content = (
+      <WorkspaceInvalid
+        brokenPath={brokenPath}
+        onChooseWorkspace={onRetryWorkspace}
+      />
+    );
+  } else if (!isLoading && mode === "ready" && workspace) {
+    content = (
+      <ReadyPanel
+        currentWorkspacePath={workspace.display_path}
+        entries={workspace.entries}
+        showBoundaryBanner={Boolean(boundaryMessage)}
+      />
+    );
   }
 
-  return (
-    <main className="container">
-      <h1>Welcome to Tauri + React</h1>
-
-      <div className="row">
-        <a href="https://vite.dev" target="_blank">
-          <img src="/vite.svg" className="logo vite" alt="Vite logo" />
-        </a>
-        <a href="https://tauri.app" target="_blank">
-          <img src="/tauri.svg" className="logo tauri" alt="Tauri logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <p>Click on the Tauri, Vite, and React logos to learn more.</p>
-
-      <form
-        className="row"
-        onSubmit={(e) => {
-          e.preventDefault();
-          greet();
-        }}
-      >
-        <input
-          id="greet-input"
-          onChange={(e) => setName(e.currentTarget.value)}
-          placeholder="Enter a name..."
-        />
-        <button type="submit">Greet</button>
-      </form>
-      <p>{greetMsg}</p>
-    </main>
-  );
+  return <main className="app-shell">{content}</main>;
 }
 
 export default App;
