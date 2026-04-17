@@ -138,7 +138,7 @@ jobs:
           Add-Content -Path $env:GITHUB_STEP_SUMMARY -Value "## Windows Installers"
           Add-Content -Path $env:GITHUB_STEP_SUMMARY -Value ""
           Add-Content -Path $env:GITHUB_STEP_SUMMARY -Value $releaseLine
-          Add-Content -Path $env:GITHUB_STEP_SUMMARY -Value "- Bundle root: \`${{ steps.locate_installers.outputs.bundle_root }}\`"
-          Add-Content -Path $env:GITHUB_STEP_SUMMARY -Value "- Workflow artifact: \`windows-installers-${{ github.ref_name }}\`"
-          Add-Content -Path $env:GITHUB_STEP_SUMMARY -Value "- NSIS installer: \`$setupName\`"
-          Add-Content -Path $env:GITHUB_STEP_SUMMARY -Value "- MSI installer: \`$msiName\`"
+          Add-Content -Path $env:GITHUB_STEP_SUMMARY -Value ('- Bundle root: `' + '${{ steps.locate_installers.outputs.bundle_root }}' + '`')
+          Add-Content -Path $env:GITHUB_STEP_SUMMARY -Value ('- Workflow artifact: `' + 'windows-installers-${{ github.ref_name }}' + '`')
+          Add-Content -Path $env:GITHUB_STEP_SUMMARY -Value ('- NSIS installer: `' + $setupName + '`')
+          Add-Content -Path $env:GITHUB_STEP_SUMMARY -Value ('- MSI installer: `' + $msiName + '`')

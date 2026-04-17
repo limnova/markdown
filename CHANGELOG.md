@@ -2,6 +2,12 @@
 
 This file records human-readable release notes for published versions.
 
+## v0.1.5 - 2026-04-17
+
+### Fixed
+- Fixed PowerShell summary rendering in the GitHub `Release` workflow so markdown-style backticks no longer break the job after installers are already built and located.
+- Replaced fragile inline escaped strings in the summary step with explicit string concatenation.
+
 ## v0.1.4 - 2026-04-17
 
 ### Fixed
