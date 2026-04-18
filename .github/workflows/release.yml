@@ -104,7 +104,7 @@ jobs:
           if-no-files-found: error
           path: ${{ steps.locate_installers.outputs.artifact_paths }}
 
-      - name: Create draft GitHub release
+      - name: Create GitHub release
         id: create_release
         continue-on-error: true
         uses: softprops/action-gh-release@v2
@@ -112,7 +112,7 @@ jobs:
           token: ${{ env.RELEASE_TOKEN }}
           tag_name: ${{ github.ref_name }}
           name: Markdown ${{ github.ref_name }}
-          draft: true
+          draft: false
           prerelease: ${{ contains(github.ref_name, '-') }}
           generate_release_notes: true
           files: ${{ steps.locate_installers.outputs.artifact_paths }}
@@ -126,13 +126,13 @@ jobs:
           $msiName = Split-Path "${{ steps.locate_installers.outputs.msi_path }}" -Leaf
           $setupName = Split-Path "${{ steps.locate_installers.outputs.setup_path }}" -Leaf
           $releaseLine = if (-not [string]::IsNullOrWhiteSpace($releaseUrl)) {
-            "- Draft release: $releaseUrl"
+            "- Release: $releaseUrl"
           } elseif ($releaseOutcome -eq "failure" -and "$env:HAS_RELEASE_TOKEN" -eq "true") {
-            "- Draft release: failed even with `RELEASE_TOKEN`; check the token scope and repository release permissions"
+            "- Release: failed even with `RELEASE_TOKEN`; check the token scope and repository release permissions"
           } elseif ($releaseOutcome -eq "failure") {
-            "- Draft release: skipped after permission failure with default `GITHUB_TOKEN` (set `RELEASE_TOKEN` to keep auto-publishing enabled)"
+            "- Release: skipped after permission failure with default `GITHUB_TOKEN` (set `RELEASE_TOKEN` to keep auto-publishing enabled)"
           } else {
-            "- Draft release: not created"
+            "- Release: not created"
           }
 
           Add-Content -Path $env:GITHUB_STEP_SUMMARY -Value "## Windows Installers"

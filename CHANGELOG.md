@@ -2,6 +2,12 @@
 
 This file records human-readable release notes for published versions.
 
+## v0.1.6 - 2026-04-19
+
+### Changed
+- Changed the GitHub `Release` workflow to publish a normal release immediately after a successful tag build instead of creating a draft first.
+- Updated the release documentation to match the new auto-publish behavior.
+
 ## v0.1.5 - 2026-04-17
 
 ### Fixed
